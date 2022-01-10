@@ -20,6 +20,7 @@ def test_empty_option():
     for key in ret:
         if ret[key] == True:
             assert False
+
     assert True
 
 def test_s_option():
@@ -45,3 +46,13 @@ def test_server_equivalency_to_s():
     assert ret["-s"]== True
     ret = cli.main("-s")
     assert ret["--server"]== True
+
+def test_port_option():
+    """Check that the port option is taken into account if provided
+
+    """
+    ret = cli.main("--port=123")
+    assert  int(ret["--port"])== 123
+    ret = cli.main()
+    ret["--port"] == 0
+
