@@ -29,14 +29,14 @@ class tests_decoder(unittest.TestCase):
 		decrypted_msg1 = decryptor.decode(encrypted_msg1,key)
 		self.assertEqual(decrypted_msg1, clear_msg1)
 		
-		f2 = open('special_caracters.txt', 'r')
+		f2 = open('tests/special_caracters.txt', 'r')
 		clear_msg2 = bytes(f2.read(), 'utf-8')
 		f2.close()
 		encrypted_msg2 = encryptor.encrypt(clear_msg2)
 		decrypted_msg2 = decryptor.decode(encrypted_msg2, key)
 		self.assertEqual(decrypted_msg2, clear_msg2)
 		
-		f3 = open('lorem_ipsum.txt', 'r')
+		f3 = open('tests/lorem_ipsum.txt', 'r')
 		clear_msg3 = bytes(f3.read(), 'utf-8')
 		f3.close()
 		encrypted_msg3 = encryptor.encrypt(clear_msg3)
