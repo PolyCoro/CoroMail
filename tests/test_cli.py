@@ -52,7 +52,28 @@ def test_port_option():
 
     """
     ret = cli.main("--port=123")
+    # Doc opt always return a string
     assert  int(ret["--port"])== 123
     ret = cli.main()
     ret["--port"] == 0
-
+    #Test if required arguments are checked for
+    try :
+        ret = cli.main("--port=ghi")
+        assert False
+    except ValueError :
+        assert True
+    try :
+        ret = cli.main("--port=@!")
+        assert False
+    except ValueError :
+        assert True
+    try :
+        ret = cli.main("--port=")
+        assert False
+    except ValueError :
+        assert True
+    try :
+        ret = cli.main("--port=-1")
+        assert False
+    except ValueError :
+        assert True
