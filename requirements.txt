@@ -1,2 +1,2 @@
 pycryptodome==3.12.0
-docopts==1.0.0
+docopt==1.0.0
