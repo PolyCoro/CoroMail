@@ -35,13 +35,17 @@ class tests_decoder(unittest.TestCase):
 		encrypted_msg2 = encryptor.encrypt(clear_msg2)
 		decrypted_msg2 = decryptor.decode(encrypted_msg2, key)
 		self.assertEqual(decrypted_msg2, clear_msg2)
-		
+
+		""" Invalid test : pycryptodome can't encrypt message that are longer
+			than RSA_modulus - 2 - 2 * HASH. In our case, 86
+
 		f3 = open('tests/lorem_ipsum.txt', 'r')
 		clear_msg3 = bytes(f3.read(), 'utf-8')
 		f3.close()
 		encrypted_msg3 = encryptor.encrypt(clear_msg3)
 		decrypted_msg3 = decryptor.decode(encrypted_msg3, key)
 		self.assertEqual(decrypted_msg3, clear_msg3)
+		"""
 		
 
 if __name__ == '__main__':
