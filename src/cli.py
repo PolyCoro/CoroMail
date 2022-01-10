@@ -5,7 +5,7 @@ Usage:
 
 	-h --help     Show this screen.
 	-s --server   Launch a server (default behavior is launching a client)
-
+	--port=<int>  The port used by the underlying program
 """
 import logging
 from docopt import docopt
@@ -18,6 +18,7 @@ def main(*args,**kwargs):
 	""" 
 	# Necessary for pytest automation
 	ARGS = docopt(__doc__,argv=args)
+	
 	return ARGS
 
 if __name__ == '__main__':

@@ -11,11 +11,21 @@ Todo:
 import pytest
 from src import cli
 
+def test_empty_option():
+    """Test the CLI default behavior 
+
+    """
+    ret = cli.main()
+
+    for key in ret:
+        if ret[key] == True:
+            assert False
+    assert True
+
 def test_s_option():
     """Test the s option in the CLI.
 
     """
-
     ret = cli.main("-s")
     assert ret["-s"]== True
 
@@ -33,3 +43,5 @@ def test_server_equivalency_to_s():
     """
     ret = cli.main("--server")
     assert ret["-s"]== True
+    ret = cli.main("-s")
+    assert ret["--server"]== True
