@@ -26,7 +26,7 @@ class TestFuncs(unittest.TestCase):
 		encrypted_msg = encrypt.code(message,public_key)
 		self.assertEqual( encrypted_msg , "FAIL" )
 
-		message = "Tést @Vèc Kàr@c&Re $péçiaux15"
+		message = "Té~st @V#èc Kàr@c&Reœ $péçùiaux1µ*5"
 		key = RSA.generate(1024)
 		public_key = key.publickey()
 		encrypt = Coder("RSA")
@@ -35,7 +35,15 @@ class TestFuncs(unittest.TestCase):
 		decoded_msg = decoded_msg.decode('utf-8')
 		self.assertEqual( message , decoded_msg )
 
-		
+
+		message = "Tést @Vèc Kàr@c&Re $péçiaux15 Tést @Vèc Kàr@c&Re $péçiaux15Tést @Vèc Kàr@c&Re $péçiaux15Tést @Vèc Kàr@c&Re $péçiaux15Tést @Vèc Kàr@c&Re$péçiaux15Tést @Vèc Kàr@c&Re$péçiaux15Tést @Vèc"
+		key = RSA.generate(1024)
+		public_key = key.publickey()
+		encrypt = Coder("RSA")
+		encrypted_msg = encrypt.code(message,public_key)
+		decoded_msg = key.decrypt(encrypted_msg)
+		decoded_msg = decoded_msg.decode('utf-8')
+		self.assertEqual( message , decoded_msg )
 
 
 if __name__ == '__main__':
