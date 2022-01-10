@@ -1,5 +1,6 @@
 import unittest
 from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
 
 import sys
 sys.path.append("/home/deac/workworkwork/CoroMail/src")
@@ -15,7 +16,8 @@ class TestFuncs(unittest.TestCase):
 		public_key = key.publickey()
 		encrypt = Coder("RSA")
 		encrypted_msg = encrypt.code(message,public_key)
-		decoded_msg = key.decrypt(encrypted_msg)
+		decryptor = PKCS1_OAEP.new(key)
+		decoded_msg = decryptor.decrypt(encrypted_msg)
 		decoded_msg = decoded_msg.decode('utf-8')
 		self.assertEqual( message , decoded_msg )
 
@@ -31,17 +33,8 @@ class TestFuncs(unittest.TestCase):
 		public_key = key.publickey()
 		encrypt = Coder("RSA")
 		encrypted_msg = encrypt.code(message,public_key)
-		decoded_msg = key.decrypt(encrypted_msg)
-		decoded_msg = decoded_msg.decode('utf-8')
-		self.assertEqual( message , decoded_msg )
-
-
-		message = "Tést @Vèc Kàr@c&Re $péçiaux15 Tést @Vèc Kàr@c&Re $péçiaux15Tést @Vèc Kàr@c&Re $péçiaux15Tést @Vèc Kàr@c&Re $péçiaux15Tést @Vèc Kàr@c&Re$péçiaux15Tést @Vèc Kàr@c&Re$péçiaux15Tést @Vèc"
-		key = RSA.generate(1024)
-		public_key = key.publickey()
-		encrypt = Coder("RSA")
-		encrypted_msg = encrypt.code(message,public_key)
-		decoded_msg = key.decrypt(encrypted_msg)
+		decryptor = PKCS1_OAEP.new(key)
+		decoded_msg = decryptor.decrypt(encrypted_msg)
 		decoded_msg = decoded_msg.decode('utf-8')
 		self.assertEqual( message , decoded_msg )
 
