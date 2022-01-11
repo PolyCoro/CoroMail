@@ -1,0 +1,7 @@
+{'--debug': False,
+ '--name': None,
+ '--port': None,
+ '--server': False,
+ '-d': True,
+ '-s': False,
+ 'send': False}
