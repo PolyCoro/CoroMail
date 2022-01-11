@@ -29,17 +29,17 @@ class Coder :
         Returns:
             The encypted message
         """
-        if isinstance(text,str) == False:
-        	raise TypeError("message has to be a string not a %s "(type(text)))
+        if isinstance(text, str) == False:
+            raise TypeError("Message has to be a string")
 
         if len(text) <= 0 :
             raise ValueError("message is empty")
 
-        if isinstance(publickey,RSA._RSAobj) == False:
-        	raise TypeError("publickey has to be a Crypto.PublicKey.RSA._RSAobj not a %s "(type(publickey)))
-
         if (self.algo == "RSA"):
             tmp = bytes(text, 'utf-8')
             encryptor = PKCS1_OAEP.new(publickey)
-            encrypted_msg = encryptor.encrypt(tmp)
+            try:
+                encrypted_msg = encryptor.encrypt(tmp)
+            except AttributeError:
+                raise TypeError("Invalid key format")
         return encrypted_msg
