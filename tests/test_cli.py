@@ -14,7 +14,7 @@ import filecmp
 from src import cli
 from os import remove
 from contextlib import redirect_stdout
-
+from docopt import DocoptExit
 # Where to put the tests files
 TEST_DIRECTORY="tests/"
 
@@ -88,13 +88,47 @@ def test_debug_option():
     with open(TEST_DIRECTORY+'dbg.txt', 'w') as f:
         with redirect_stdout(f):
             ret = cli.main("-d")
+            
     #Cant read from write opened file
     with open(TEST_DIRECTORY+'dbg.txt', 'r') as f:
         with open(TEST_DIRECTORY+'expected_dbg.txt', 'r') as fe:
             assert(filecmp.cmp(f.name,fe.name))
     
-    os.remove(TEST_DIRECTORY+'dbg.txt')
-    os.remove(TEST_DIRECTORY+'expected_dbg.txt')
+    #os.remove(TEST_DIRECTORY+'dbg.txt')
 
+def test_send_command():
+    """Check that the debug option echoes the app info 
+
+    Must be updated every time there's a new attribute in the CLI
+
+    """
+    with pytest.raises(DocoptExit):
+        ret = cli.main("send")
+
+    with pytest.raises(DocoptExit):
+        ret = cli.main("send user1")
+
+    with pytest.raises(DocoptExit):
+        ret = cli.main("send user1 -f")
+
+    with pytest.raises(DocoptExit):
+        ret = cli.main("send -f")
+
+    with pytest.raises(DocoptExit):
+        ret = cli.main("send --file afile.txt")
+
+    ret = cli.main("send user1 testtext")
+    assert ret["NAME"] == "user1"
+    assert ret["TEXT"] == "testtext"
+
+
+    ret = cli.main("send 1ser2 --file testtext.txt")
+    assert ret["NAME"] == "1ser2"
+    assert ret["--file"] == "testtext.txt"
+
+    # Unexpected behavior but it's a feature
+    ret = cli.main("send user1 --f testtext.txt")
+    assert ret["NAME"] == "user1"
+    assert ret["--file"] == "testtext.txt"
         # Doc opt always return a string
   

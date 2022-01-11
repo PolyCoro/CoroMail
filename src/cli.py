@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 """
 Usage:
-	cli.py [-s|--server] [--port=<int>] [ -d | --debug]
-	cli.py send (--name=<str>) 
+	polycoro [-s|--server] [--port=<int>] [ -d | --debug]
+	polycoro send NAME [--port=<int>] [ -d | --debug] (TEXT | (--file=<str>))
 
 Options:
 	-h --help     Show this screen.
 	-s --server   Launch a server (default behavior is launching a client)
-	-d --debug    Launch the application in debugging mode [default: False]
-	-n --name	  The name of the receiver we want to send the data to	  
+	-d --debug    Launch the application in debugging mode, AKA print the arguments this program can receive [default: False] 
 	--port=<int>  The port used by the underlying program [default: 0] @int
+	--file=<str>  Replace the TEXT entry with text provided in a file (evaluated from the execution directory)
 """
 import logging
 from docopt import docopt
@@ -24,12 +24,17 @@ def main(*args,**kwargs):
 	port = 000
 	server = False
 	debug = False
+
 	# Necessary for pytest automation
 	if args:
-		ARGS = docopt(__doc__,argv=args)
+		ARGS = docopt(__doc__,argv=args[0])
 	else :
 		ARGS = docopt(__doc__)
 
+
+	if( "-s", "--server" in ARGS):
+		if ARGS["-s"] or ARGS["--server"]:
+			ARGS["--server"],ARGS["-s"] =True,True
 
 	if(ARGS["--port"]):
 		if((int(ARGS["--port"])<0) or (ARGS["--port"]=='')) :
@@ -41,17 +46,24 @@ def main(*args,**kwargs):
 
 	if( "-d", "--debug" in ARGS):
 		if ARGS["-d"] or ARGS["--debug"]:
-			print(ARGS)
 			debug = True
 			ARGS["--debug"],ARGS["-d"] =True,True
+			print(ARGS)
 
-	if( "-s", "--server" in ARGS):
-		if ARGS["-s"] or ARGS["--server"]:
-			ARGS["--server"],ARGS["-s"] =True,True
+		
 	
+	if("send" in ARGS):
+		if(ARGS["send"]):
+			logging.info("Message sent to" + ARGS["NAME"] + " :\n")
+			if("--file" in ARGS):
+				if ARGS["--file"] :
+					logging.info(ARGS["--file"])
+			else :
+				if("TEXT" in ARGS):
+					if ARGS["TEXT"]:
+						logging.info(ARGS["TEXT"])
 
 	return ARGS
-
 
 if __name__ == '__main__':
 	main()

@@ -1,7 +1,9 @@
-{'--debug': False,
- '--name': None,
+{'--debug': True,
+ '--file': None,
  '--port': None,
  '--server': False,
  '-d': True,
  '-s': False,
+ 'NAME': None,
+ 'TEXT': None,
  'send': False}
