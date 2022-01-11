@@ -7,7 +7,6 @@ import sys
 import src
 from src.coder import Coder
 
-
 class TestFuncs(unittest.TestCase):
 
 
@@ -26,8 +25,7 @@ class TestFuncs(unittest.TestCase):
 		key = RSA.generate(1024)
 		public_key = key.publickey()
 		encrypt = Coder("RSA")
-		encrypted_msg = encrypt.code(message,public_key)
-		self.assertEqual( encrypted_msg , "FAIL" )
+		with pytest.raises(ValueError): encrypt.code(message, public_key)
 
 		message = "Té~st @V#èc Kàr@c&Reœ $péçùiaux1µ*5"
 		key = RSA.generate(1024)
@@ -38,6 +36,7 @@ class TestFuncs(unittest.TestCase):
 		decoded_msg = decryptor.decrypt(encrypted_msg)
 		decoded_msg = decoded_msg.decode('utf-8')
 		self.assertEqual( message , decoded_msg )
+
 
 	def test_non_key(self):
 		key = "This is not a key"
@@ -90,6 +89,8 @@ class TestFuncs(unittest.TestCase):
 		text = "a" * 1000
 		with pytest.raises(ValueError):
 			coder.code(text, key)
+
+
 
 if __name__ == '__main__':
 	unittest.main()
