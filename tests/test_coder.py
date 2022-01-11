@@ -7,6 +7,8 @@ import sys
 import src
 from src.coder import Coder
 
+
+
 class TestFuncs(unittest.TestCase):
 
 
@@ -37,7 +39,6 @@ class TestFuncs(unittest.TestCase):
 		decoded_msg = decoded_msg.decode('utf-8')
 		self.assertEqual( message , decoded_msg )
 
-
 	def test_non_key(self):
 		key = "This is not a key"
 		text = "Text to encrypt"
@@ -66,6 +67,7 @@ class TestFuncs(unittest.TestCase):
 		arr = bytes(rList)
 		with pytest.raises(TypeError):
 			coder.code(arr, key)
+		
 	
 	def test_text_too_long(self):
 		key = RSA.generate(1024)
@@ -86,10 +88,9 @@ class TestFuncs(unittest.TestCase):
 		key = RSA.generate(2048)
 		public_key = key.publickey()
 		coder = Coder("RSA")
-		text = "a" * 1000
+		text = "a" * 1000000000
 		with pytest.raises(ValueError):
 			coder.code(text, key)
-
 
 
 if __name__ == '__main__':
