@@ -6,36 +6,75 @@ Manage contacts from the database
 import logging
 from docopt import docopt
 import sqlite3
-TABLE_NAME = "Polycoro"
-COLUMN_NAMES = ('name','public_key','ip')
+from src.contacts_constant import * 
+from src.app_user import *
 # Not necessarily useful
-USER_NAME= "me"
-# TODO : Remove this once a proper app user class has been developped
-class app_user :
-    def __init__(self,name,password,ip):
-        self.name = name 
-        self.password = password 
-        self.ip = ip
+
 
 class contacts:
-    def __init__(self,db_name):
-        if db_name == "":
+    """ Contacts classes to manage the database from the client
+    """
+    conn = None
+    def __init__(self,db_path,usr):
+        if db_path == "" or usr == None:
             raise ValueError
+        
         try :
-            conn = sqlite3.connect(db_name)
+            self.conn = sqlite3.connect(db_path)
         except ConnectionError:
-            self.cur = conn.cursor()
             raise 
+        self.cur = self.conn.cursor()
+        query = "create table if not exists "+usr.name+" ("+COLUMN_NAMES[0] + " UNIQUE"
+        for col in COLUMN_NAMES[1:] :
+            query +=   ", " + col 
+        query += ');'
+        self.cur.execute(query)
+        self.owner = usr
 
-    def add_user(usr) :
-        query = "INSERT INTO "+TABLE_NAME+":"+ USER_NAME + "(" +COLUMN_NAMES[0]
+    def add_user(self,usr) :
+        """Insert an app_user into the database
+        Args:
+		usr_name (usr) : an app_user 
+		
+	""" 
+        query = "INSERT INTO "+ self.owner.name + "(" +COLUMN_NAMES[0]
         var_field = "(?"
         for col in COLUMN_NAMES[1:] :
             query +=   " , " + col 
             var_field += ",?"
 
-        query += ") values " + var_field+")"
-        cur.execute(query,(usr.name,usr.password,usr.public_key))
+        query += ") values " + var_field +")"
+ 
+        self.cur.execute(query,(usr.name,usr.password,usr.pubkey,usr.ip))
+        self.conn.commit()
+
+    def get_user(self,usr_name) :
+        """ Return an app_user from the database
+		Args:
+		usr_name (String) : the name of the user we want to retrieve
+		
+		Returns:
+            appUser: the user retrieved from the database
+	""" 
+        query = "SELECT * FROM "+self.owner.name+" WHERE "+USERNAME_COL_NAME + " = '" +usr_name +"'"
+        fields = self.cur.execute(query).fetchall()
+        print(fields[0])
+        return app_user(fields[0][0],fields[0][1],fields[0][2],fields[0][3])
+
+    def get_users(self) :
+        """ Return all the app users from the database
+
+		Returns:
+            appUser[]: the users retrieved from the database
+	""" 
+        query = "SELECT * FROM "+self.owner.name
+        fields = self.cur.execute(query).fetchall()
+        users = []
+        for usr_info in fields :
+            users.append(app_user(usr_info[0],usr_info[1],usr_info[2],usr_info[3]))
+
+        return users
+
 
 if __name__ == "__main__" :
     Contacts =contacts("")

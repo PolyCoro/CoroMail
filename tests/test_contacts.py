@@ -11,155 +11,109 @@ Todo:
 import pytest
 import os
 import filecmp
-from src import contacts
+from src.contacts import contacts
+from src.contacts_constant import *
+from src.app_user import *
+from src import contacts_def
 from os import remove
 from contextlib import redirect_stdout
 from docopt import DocoptExit
+import sqlite3
 # Where to put the tests files
 TEST_DIRECTORY="tests/"
+DB_NAME = "contacts.db"
 
+
+tst_name = "someone"
+tst_pwd = "password"
+tst_pkey = "pkey"
+tst_ip = "127.0.0.0"
+tst_usr = app_user(tst_name,tst_pwd,tst_pkey,tst_ip)
+add_tst_name = "added"
+add_tst_pwd = "pwd"
+add_tst_pkey = "pkey"
+add_tst_ip = "127.0.0.0"
+add_usr = app_user(add_tst_name,add_tst_pwd,add_tst_pkey,add_tst_ip)
+tst_users = [add_usr,tst_usr]
 def test_empty_db_name():
     """
 Check that empty or wrong names for the database raise an error
 """
     with pytest.raises(ValueError):
-        contacts.contacts("")
+        contacts("",None)
+
+def test_db_creation():
+    """
+Check that empty or wrong names for the database raise an error
+"""
+    ct = contacts(DB_NAME,tst_usr)
+    
+    ret = ct.cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='"+tst_usr.name+"'")
+    # Verify that a table is created
+    assert ct.cur.fetchall()[0][0] == tst_usr.name
+    
+    #Verify if the fields are createds
+    fields = ct.cur.execute("SELECT name FROM PRAGMA_TABLE_INFO('"+tst_usr.name+"')" ).fetchall()
+    i = 0
+    for colname in COLUMN_NAMES :
+        assert fields[i][0] == colname 
+        i += 1
+        
+def test_add_user():
+    """
+Check that empty or wrong names for the database raise an error
+"""
+    ct = contacts(DB_NAME,tst_usr)
+    ct.add_user(add_usr)
+    query =  "SELECT * FROM "+tst_usr.name+" WHERE "+USERNAME_COL_NAME + " = '" +add_usr.name +"'"
+
+    data = ct.cur.execute(query).fetchall()
+    usr = app_user(data[0][0],data[0][1],data[0][2],data[0][3])
+    assert usr.name == add_tst_name
+    assert usr.password == add_tst_pwd
+    assert usr.ip == add_tst_ip
+    assert usr.pubkey == add_tst_pkey
+
+def test_add_user_unique():
+    """
+Check that each user has a different name
+"""
+    ct = contacts(DB_NAME,tst_usr)
+    with pytest.raises(sqlite3.IntegrityError):
+          ct.add_user(add_usr)
+
+
+def test_get_user():
+    """
+Check that empty or wrong names for the database raise an error
+"""
+
+    ct = contacts(DB_NAME, tst_usr)
+  
+    query =  "SELECT * FROM "+tst_usr.name+" WHERE "+USERNAME_COL_NAME + " = '" +add_usr.name +"'"
+    data = ct.cur.execute( query).fetchall()
+    usr = app_user(data[0][0],data[0][1],data[0][2],data[0][3])
+    assert usr.name == add_tst_name
+    assert usr.password == add_tst_pwd
+    assert usr.ip == add_tst_ip
+    assert usr.pubkey == add_tst_pkey
+    
+def test_get_users():
+    """
+Check that every user in a database are retrieved
+"""
+
+    ct = contacts(DB_NAME, tst_usr)
+    ct.add_user(tst_usr)
+    users = ct.get_users()
+    i = 0
+    for usr in tst_users:
+        assert usr.name  == users[i].name 
+        assert usr.password  ==users[i].password 
+        assert usr.ip  == users[i].ip 
+        assert usr.pubkey  ==users[i].pubkey 
+        i += 1
 
 if __name__ == '__main__':
 
     main() == None
-
-
-# def test_s_option():
-#     """Test the s option in the CLI.
-
-#     """
-#     ret = cli.main("-s")
-#     assert ret["-s"]== True
-
-# def test_server_option():
-#     """Check that the two option ored give the same results.
-
-#     """
-#     ret = cli.main("--server")
-#     assert ret["--server"]== True
-
-
-# def test_server_equivalency_to_s():
-#     """Check that the two option ored give the same results.
-
-#     """
-#     ret = cli.main("--server")
-#     assert ret["-s"]== True
-#     ret = cli.main("-s")
-#     assert ret["--server"]== True
-
-# def test_port_option():
-#     """Check that the port option is taken into account if provided
-
-#     """
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("--port=123")
-
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("--port")
-        
-    
-#     #Test if required arguments are checked for
-#     with pytest.raises(ValueError):
-#         ret = cli.main("-s --port=ghi")
-
-#     with pytest.raises(ValueError):
-#         ret = cli.main("-s --port=@!")
-
-#     with pytest.raises(ValueError):
-#         ret = cli.main("-s --port=")
-    
-#     with pytest.raises(ValueError):
-#         ret = cli.main("-s --port=-1")
-
-
-# def test_debug_option():
-#     """Check that the debug option echoes the app info 
-
-#     Must be updated every time there's a new attribute in the CLI
-
-#     """
-
-#     with open(TEST_DIRECTORY+'dbg.txt', 'w') as f:
-#         with redirect_stdout(f):
-#             ret = cli.main("-d")
-            
-#     #Cant read from write opened file
-#     with open(TEST_DIRECTORY+'dbg.txt', 'r') as f:
-#         with open(TEST_DIRECTORY+'expected_dbg.txt', 'r') as fe:
-#             assert(filecmp.cmp(f.name,fe.name))
-    
-#     os.remove(TEST_DIRECTORY+'dbg.txt')
-
-# def test_send_command():
-#     """Check that the send command get the right parameters when launched or otherwhile fails 
-
-#     """
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("send")
-
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("send user1")
-
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("send user1 -f")
-
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("send -f")
-
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("send --file afile.txt")
-
-#     ret = cli.main("send user1 testtext")
-#     assert ret["NAME"] == "user1"
-#     assert ret["TEXT"] == "testtext"
-
-#     ret = cli.main("send 1ser2 --file " + TEST_DIRECTORY+ "testtext.txt")
-#     assert ret["NAME"] == "1ser2"
-#     assert ret["--file"] == TEST_DIRECTORY+"testtext.txt"
-
-#     # Unexpected behavior but it's a feature
-#     ret = cli.main("send user1 --f "+TEST_DIRECTORY+"testtext.txt")
-#     assert ret["NAME"] == "user1"
-#     assert ret["--file"] == TEST_DIRECTORY+"testtext.txt"
-#         # Doc opt always return a string
-  
-# def test_check():
-#     """Check that the check command is rightly understood
-#     """
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("check")
-
-
-#     ret = cli.main("check user1")
-#     assert ret["NAME"] == "user1"
-#     assert ret["check"] == True
-
-#     ret = cli.main("check 1ser1 --port=3")
-#     assert ret["NAME"] == "1ser1"
-#     assert ret["check"] == True
-#     assert int(ret["--port"]) == 3
-
-# def test_getpub():
-#     """Check that the get public key command has the same behavior as expected 
-#     """
-
-#     with pytest.raises(DocoptExit):
-#         ret = cli.main("getpub")
-
-#     ret = cli.main("getpub user1")
-#     print(ret)
-#     assert ret["NAME"] == "user1"
-#     assert ret["getpub"] == True
-
-#     ret = cli.main("getpub user1 --port=01")
-#     print(ret)
-#     assert ret["NAME"] == "user1"
-#     assert ret["getpub"] == True
-#     assert int(ret["--port"]) == 1
