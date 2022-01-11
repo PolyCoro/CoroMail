@@ -29,10 +29,17 @@ class Coder :
         Returns:
             The encypted message
         """
-        if len(text) == 0 :
-            return "FAIL"
+        if isinstance(text, str) == False:
+            raise TypeError("Message has to be a string")
+
+        if len(text) <= 0 :
+            raise ValueError("message is empty")
+
         if (self.algo == "RSA"):
             tmp = bytes(text, 'utf-8')
             encryptor = PKCS1_OAEP.new(publickey)
-            encrypted_msg = encryptor.encrypt(tmp)
+            try:
+                encrypted_msg = encryptor.encrypt(tmp)
+            except AttributeError:
+                raise TypeError("Invalid key format")
         return encrypted_msg
