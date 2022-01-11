@@ -8,13 +8,15 @@ from Crypto.Hash import SHA512, SHA384, SHA256, SHA, MD5
 from Crypto import Random
 
 import sys
-#import src
-#from src.coder import Coder
+import src
+from src.appUser import appUser
+from src.message import Message
 
-import sys
+"""import sys
 sys.path.append("/home/deac/workworkwork/CoroMail/src")
 from appUser import appUser
 from message import Message
+"""
 
 class TestFuncs(unittest.TestCase):
 
