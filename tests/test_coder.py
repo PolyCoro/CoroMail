@@ -1,4 +1,5 @@
 import unittest
+import pytest
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 
@@ -38,6 +39,34 @@ class TestFuncs(unittest.TestCase):
 		decoded_msg = decoded_msg.decode('utf-8')
 		self.assertEqual( message , decoded_msg )
 
+	def test_non_key(self):
+		key = "This is not a key"
+		text = "Text to encrypt"
+		coder = Coder("RSA")
+		with pytest.raises(TypeError):
+			coder.code(text, key)
+
+	def test_empty_key(self):
+		text = "Text to encrypt"
+		coder = Coder("RSA")
+		with pytest.raises(TypeError):
+			coder.code(text, "")
+	
+	def test_empty_text(self):
+		key = RSA.generate(1024)
+		public_key = key.publickey()
+		coder = Coder("RSA")
+		with pytest.raises(ValueError):
+			coder.code("", key)
+	
+	def test_non_text(self):
+		key = RSA.generate(1024)
+		public_key = key.publickey()
+		coder = Coder("RSA")
+		rList = [1, 2, 3, 4, 5]
+		arr = bytes(rList)
+		with pytest.raises(TypeError):
+			coder.code(arr, key)
 
 if __name__ == '__main__':
 	unittest.main()
