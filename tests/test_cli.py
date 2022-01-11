@@ -22,13 +22,9 @@ def test_empty_option():
     """Test the CLI default behavior 
 
     """
-    ret = cli.main()
+    with pytest.raises(DocoptExit):
+        ret = cli.main("")
 
-    for key in ret:
-        if ret[key] == True:
-            assert False
-
-    assert True
 
 def test_s_option():
     """Test the s option in the CLI.
@@ -58,24 +54,25 @@ def test_port_option():
     """Check that the port option is taken into account if provided
 
     """
+    with pytest.raises(DocoptExit):
+        ret = cli.main("--port=123")
 
-    ret = cli.main("--port=123")
-    # Doc opt always return a string
-    assert  int(ret["--port"])== 123
-    ret = cli.main()
-    ret["--port"] == 0
+    with pytest.raises(DocoptExit):
+        ret = cli.main("--port")
+        
+    
     #Test if required arguments are checked for
     with pytest.raises(ValueError):
-        ret = cli.main("--port=ghi")
+        ret = cli.main("-s --port=ghi")
 
     with pytest.raises(ValueError):
-        ret = cli.main("--port=@!")
+        ret = cli.main("-s --port=@!")
 
     with pytest.raises(ValueError):
-        ret = cli.main("--port=")
+        ret = cli.main("-s --port=")
     
     with pytest.raises(ValueError):
-        ret = cli.main("--port=-1")
+        ret = cli.main("-s --port=-1")
 
 
 def test_debug_option():
@@ -94,12 +91,10 @@ def test_debug_option():
         with open(TEST_DIRECTORY+'expected_dbg.txt', 'r') as fe:
             assert(filecmp.cmp(f.name,fe.name))
     
-    #os.remove(TEST_DIRECTORY+'dbg.txt')
+    os.remove(TEST_DIRECTORY+'dbg.txt')
 
 def test_send_command():
-    """Check that the debug option echoes the app info 
-
-    Must be updated every time there's a new attribute in the CLI
+    """Check that the send command get the right parameters when launched or otherwhile fails 
 
     """
     with pytest.raises(DocoptExit):
@@ -121,14 +116,46 @@ def test_send_command():
     assert ret["NAME"] == "user1"
     assert ret["TEXT"] == "testtext"
 
-
-    ret = cli.main("send 1ser2 --file testtext.txt")
+    ret = cli.main("send 1ser2 --file " + TEST_DIRECTORY+ "testtext.txt")
     assert ret["NAME"] == "1ser2"
-    assert ret["--file"] == "testtext.txt"
+    assert ret["--file"] == TEST_DIRECTORY+"testtext.txt"
 
     # Unexpected behavior but it's a feature
-    ret = cli.main("send user1 --f testtext.txt")
+    ret = cli.main("send user1 --f "+TEST_DIRECTORY+"testtext.txt")
     assert ret["NAME"] == "user1"
-    assert ret["--file"] == "testtext.txt"
+    assert ret["--file"] == TEST_DIRECTORY+"testtext.txt"
         # Doc opt always return a string
   
+def test_check():
+    """Check that the check command is rightly understood
+    """
+    with pytest.raises(DocoptExit):
+        ret = cli.main("check")
+
+
+    ret = cli.main("check user1")
+    assert ret["NAME"] == "user1"
+    assert ret["check"] == True
+
+    ret = cli.main("check 1ser1 --port=3")
+    assert ret["NAME"] == "1ser1"
+    assert ret["check"] == True
+    assert int(ret["--port"]) == 3
+
+def test_getpub():
+    """Check that the get public key command has the same behavior as expected 
+    """
+
+    with pytest.raises(DocoptExit):
+        ret = cli.main("getpub")
+
+    ret = cli.main("getpub user1")
+    print(ret)
+    assert ret["NAME"] == "user1"
+    assert ret["getpub"] == True
+
+    ret = cli.main("getpub user1 --port=01")
+    print(ret)
+    assert ret["NAME"] == "user1"
+    assert ret["getpub"] == True
+    assert int(ret["--port"]) == 1

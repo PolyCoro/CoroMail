@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """
 Usage:
-	polycoro [-s|--server] [--port=<int>] [ -d | --debug]
-	polycoro send NAME [--port=<int>] [ -d | --debug] (TEXT | (--file=<str>))
+	polycoro (((-s|--server) [--port=<int>] ) | ( -d | --debug) )
+	polycoro send (NAME) [--port=<int>] [ -d | --debug] (TEXT | (--file=<str>))
+	polycoro check (NAME) [--port=<int>] [ -d | --debug]  
+	polycoro getpub (NAME) [--port=<int>] [ -d | --debug] 
 
 Options:
 	-h --help     Show this screen.
@@ -31,10 +33,8 @@ def main(*args,**kwargs):
 	else :
 		ARGS = docopt(__doc__)
 
-
-	if( "-s", "--server" in ARGS):
-		if ARGS["-s"] or ARGS["--server"]:
-			ARGS["--server"],ARGS["-s"] =True,True
+	if ARGS["-s"] or ARGS["--server"]:
+		ARGS["--server"],ARGS["-s"] =True,True
 
 	if(ARGS["--port"]):
 		if((int(ARGS["--port"])<0) or (ARGS["--port"]=='')) :
@@ -44,24 +44,23 @@ def main(*args,**kwargs):
 		if ARGS["--port"]=='':
 			raise ValueError
 
-	if( "-d", "--debug" in ARGS):
-		if ARGS["-d"] or ARGS["--debug"]:
-			debug = True
-			ARGS["--debug"],ARGS["-d"] =True,True
-			print(ARGS)
+	if ARGS["-d"] or ARGS["--debug"]:
+		debug = True
+		ARGS["--debug"],ARGS["-d"] =True,True
+		print(ARGS)
 
-		
-	
-	if("send" in ARGS):
-		if(ARGS["send"]):
-			logging.info("Message sent to" + ARGS["NAME"] + " :\n")
-			if("--file" in ARGS):
-				if ARGS["--file"] :
-					logging.info(ARGS["--file"])
-			else :
-				if("TEXT" in ARGS):
-					if ARGS["TEXT"]:
-						logging.info(ARGS["TEXT"])
+	if(ARGS["check"]):
+		# The user still needs to be checked
+		logging.info("Checked" + ARGS["NAME"] + " public key :\n")
+
+	if(ARGS["send"]):
+		# The message still needs to be sent
+		logging.info("Message sent to" + ARGS["NAME"] + " :\n")
+		if ARGS["--file"] :
+			with  open( ARGS["--file"], 'r') as f:
+				logging.info(f.read())
+		if ARGS["TEXT"]:
+				logging.info(ARGS["TEXT"])
 
 	return ARGS
 
