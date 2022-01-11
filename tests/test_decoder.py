@@ -22,7 +22,7 @@ class tests_decoder(unittest.TestCase):
 		encryptor = PKCS1_OAEP.new(public_key)
 		decryptor = Decoder("RSA")
 
-		clear_msg1 = bytes("Hello World").encode('utf-8')
+		clear_msg1 = bytes("Hello World", 'utf-8')
 		encrypted_msg1 = encryptor.encrypt(clear_msg1)
 		decrypted_msg1 = decryptor.decode(encrypted_msg1,key)
 		self.assertEqual(decrypted_msg1, clear_msg1)
@@ -34,7 +34,7 @@ class tests_decoder(unittest.TestCase):
 		decryptor = Decoder("RSA")
 
 		f2 = open('tests/special_caracters.txt', 'r')
-		clear_msg2 = bytes(f2.read()).encode('utf-8')
+		clear_msg2 = bytes(f2.read(), 'utf-8')
 		f2.close()
 		encrypted_msg2 = encryptor.encrypt(clear_msg2)
 		decrypted_msg2 = decryptor.decode(encrypted_msg2, key)
