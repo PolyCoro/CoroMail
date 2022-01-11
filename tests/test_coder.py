@@ -67,6 +67,29 @@ class TestFuncs(unittest.TestCase):
 		arr = bytes(rList)
 		with pytest.raises(TypeError):
 			coder.code(arr, key)
+	
+	def test_text_too_long(self):
+		key = RSA.generate(1024)
+		public_key = key.publickey()
+		coder = Coder("RSA")
+		text = "a" * 100
+		with pytest.raises(ValueError):
+			coder.code(text, key)
+
+	def test_text_not_too_long_2048(self):
+		key = RSA.generate(2048)
+		public_key = key.publickey()
+		coder = Coder("RSA")
+		text = "a" * 100
+		coder.code(text, key)
+
+	def test_text_too_long_2048(self):
+		key = RSA.generate(2048)
+		public_key = key.publickey()
+		coder = Coder("RSA")
+		text = "a" * 1000
+		with pytest.raises(ValueError):
+			coder.code(text, key)
 
 if __name__ == '__main__':
 	unittest.main()
