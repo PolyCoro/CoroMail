@@ -13,6 +13,6 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: POSIX :: Linux",
     ],
-    install_requires=[],
+    install_requires=["pycryptodome"],
     entry_points={"console_scripts": ["coromail = src.main:main"]},
 )
