@@ -35,6 +35,7 @@ add_tst_pkey = "pkey"
 add_tst_ip = "127.0.0.0"
 add_usr = app_user(add_tst_name,add_tst_pwd,add_tst_pkey,add_tst_ip)
 tst_users = [add_usr,tst_usr]
+remove_db = 0
 def test_empty_db_name():
     """
 Check that empty or wrong names for the database raise an error
@@ -113,6 +114,14 @@ Check that every user in a database are retrieved
         assert usr.ip  == users[i].ip 
         assert usr.pubkey  ==users[i].pubkey 
         i += 1
+    remove_db = 1
+
+@pytest.fixture(autouse=True)
+def teardown():
+    yield
+    if remove_db == 1 :
+        if(os.path.exists(DB_NAME)):
+            os.remove(DB_NAME)
 
 if __name__ == '__main__':
 
