@@ -6,10 +6,11 @@ Manage contacts from the database
 import logging
 from docopt import docopt
 import sqlite3
-from src.contacts_constant import * 
 from src.app_user import *
 # Not necessarily useful
-
+DB_NAME = "contacts.db"
+USERNAME_COL_NAME = 'name'
+COLUMN_NAMES = (USERNAME_COL_NAME,"password","pubkey","ip")
 
 class contacts:
     """ Contacts classes to manage the database from the client
