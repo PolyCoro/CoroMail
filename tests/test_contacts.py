@@ -56,7 +56,7 @@ Check that empty or wrong names for the database raise an error
     #Verify if the fields are createds
     fields = ct.cur.execute("SELECT name FROM PRAGMA_TABLE_INFO('"+tst_usr.name+"')" ).fetchall()
     i = 0
-    for colname in COLUMN_NAMES :
+    for colname in contacts.COLUMN_NAMES :
         assert fields[i][0] == colname 
         i += 1
         
@@ -67,7 +67,7 @@ Check that empty or wrong names for the database raise an error
     need_db = 1
     ct = contacts(DB_NAME,tst_usr)
     ct.add_user(add_usr)
-    query =  "SELECT * FROM "+tst_usr.name+" WHERE "+USERNAME_COL_NAME + " = '" +add_usr.name +"'"
+    query =  "SELECT * FROM "+tst_usr.name+" WHERE "+contacts.USERNAME_COL_NAME + " = '" +add_usr.name +"'"
     
     data = ct.cur.execute(query).fetchall()
     usr = app_user(data[0][0],data[0][1],data[0][2],data[0][3])
@@ -94,7 +94,7 @@ Check that empty or wrong names for the database raise an error
     need_db = 1
     ct = contacts(DB_NAME, tst_usr)
     ct.add_user(add_usr)
-    query =  "SELECT * FROM "+tst_usr.name+" WHERE "+USERNAME_COL_NAME + " = '" +add_usr.name +"'"
+    query =  "SELECT * FROM "+tst_usr.name+" WHERE "+contacts.USERNAME_COL_NAME + " = '" +add_usr.name +"'"
 
     data = ct.cur.execute( query).fetchall()
     usr = app_user(data[0][0],data[0][1],data[0][2],data[0][3])

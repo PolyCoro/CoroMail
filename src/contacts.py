@@ -8,13 +8,16 @@ from docopt import docopt
 import sqlite3
 from src.app_user import *
 # Not necessarily useful
-DB_NAME = "contacts.db"
-USERNAME_COL_NAME = 'name'
-COLUMN_NAMES = (USERNAME_COL_NAME,"password","pubkey","ip")
+
 
 class contacts:
     """ Contacts classes to manage the database from the client
     """
+
+    DB_NAME = "contacts.db"
+    USERNAME_COL_NAME = 'name'
+    COLUMN_NAMES = (USERNAME_COL_NAME,"password","pubkey","ip")
+
     conn = None
     def __init__(self,db_path,usr):
         if db_path == "" or usr == None:
@@ -25,8 +28,8 @@ class contacts:
         except ConnectionError:
             raise 
         self.cur = self.conn.cursor()
-        query = "create table if not exists "+usr.name+" ("+COLUMN_NAMES[0] + " UNIQUE"
-        for col in COLUMN_NAMES[1:] :
+        query = "create table if not exists "+usr.name+" ("+ contacts.COLUMN_NAMES[0] + " UNIQUE"
+        for col in contacts.COLUMN_NAMES[1:] :
             query +=   ", " + col 
         query += ');'
         self.cur.execute(query)
@@ -38,9 +41,9 @@ class contacts:
 		usr_name (usr) : an app_user 
 		
 	""" 
-        query = "INSERT INTO "+ self.owner.name + "(" +COLUMN_NAMES[0]
+        query = "INSERT INTO "+ self.owner.name + "(" +contacts.COLUMN_NAMES[0]
         var_field = "(?"
-        for col in COLUMN_NAMES[1:] :
+        for col in contacts.COLUMN_NAMES[1:] :
             query +=   " , " + col 
             var_field += ",?"
 
