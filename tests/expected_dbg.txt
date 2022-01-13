@@ -1,0 +1,11 @@
+{'--debug': True,
+ '--file': None,
+ '--port': None,
+ '--server': False,
+ '-d': True,
+ '-s': False,
+ 'NAME': None,
+ 'TEXT': None,
+ 'check': False,
+ 'getpub': False,
+ 'send': False}
