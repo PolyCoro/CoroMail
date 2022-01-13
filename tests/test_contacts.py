@@ -13,7 +13,6 @@ import os
 import filecmp
 from src.app_user import *
 from src.contacts import contacts
-from src.contacts_constant import *
 
 from os import remove
 from contextlib import redirect_stdout
