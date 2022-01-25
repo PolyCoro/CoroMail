@@ -5,6 +5,7 @@ Usage:
 	polycoro send (NAME) [--port=<int>] [ -d | --debug] (TEXT | (--file=<str>))
 	polycoro check (NAME) [--port=<int>] [ -d | --debug]  
 	polycoro show (NAME)  
+	polycoro setup (NAME) [config_path]
 	polycoro getpub (NAME) [--port=<int>] [ -d | --debug] 
 
 Options:
