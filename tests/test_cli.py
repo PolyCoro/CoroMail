@@ -151,12 +151,10 @@ def test_getpub():
         ret = cli.main("getpub")
 
     ret = cli.main("getpub user1")
-    print(ret)
     assert ret["NAME"] == "user1"
     assert ret["getpub"] == True
 
     ret = cli.main("getpub user1 --port=01")
-    print(ret)
     assert ret["NAME"] == "user1"
     assert ret["getpub"] == True
     assert int(ret["--port"]) == 1
