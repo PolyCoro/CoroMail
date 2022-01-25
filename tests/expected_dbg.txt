@@ -8,4 +8,5 @@
  'TEXT': None,
  'check': False,
  'getpub': False,
- 'send': False}
+ 'send': False,
+ 'show': False}

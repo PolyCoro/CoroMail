@@ -4,6 +4,7 @@ Usage:
 	polycoro (((-s|--server) [--port=<int>] ) | ( -d | --debug) )
 	polycoro send (NAME) [--port=<int>] [ -d | --debug] (TEXT | (--file=<str>))
 	polycoro check (NAME) [--port=<int>] [ -d | --debug]  
+	polycoro show (NAME)  
 	polycoro getpub (NAME) [--port=<int>] [ -d | --debug] 
 
 Options:
@@ -52,6 +53,11 @@ def main(*args,**kwargs):
 	if(ARGS["check"]):
 		# The user still needs to be checked
 		logging.info("Checked" + ARGS["NAME"] + " public key :\n")
+	
+	if(ARGS["show"]):
+
+		logging.info("Showed" + ARGS["NAME"] + " infos :\n")
+
 
 	if(ARGS["send"]):
 		# The message still needs to be sent

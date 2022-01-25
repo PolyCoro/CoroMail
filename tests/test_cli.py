@@ -11,10 +11,11 @@ Todo:
 import pytest
 import os
 import filecmp
-from src import cli
+from src import cli, contacts
 from os import remove
 from contextlib import redirect_stdout
 from docopt import DocoptExit
+
 # Where to put the tests files
 TEST_DIRECTORY="tests/"
 
@@ -91,7 +92,7 @@ def test_debug_option():
         with open(TEST_DIRECTORY+'expected_dbg.txt', 'r') as fe:
             assert(filecmp.cmp(f.name,fe.name))
     
-    os.remove(TEST_DIRECTORY+'dbg.txt')
+    # os.remove(TEST_DIRECTORY+'dbg.txt')
 
 def test_send_command():
     """Check that the send command get the right parameters when launched or otherwhile fails 
@@ -150,12 +151,26 @@ def test_getpub():
         ret = cli.main("getpub")
 
     ret = cli.main("getpub user1")
-    print(ret)
     assert ret["NAME"] == "user1"
     assert ret["getpub"] == True
 
     ret = cli.main("getpub user1 --port=01")
-    print(ret)
     assert ret["NAME"] == "user1"
     assert ret["getpub"] == True
     assert int(ret["--port"]) == 1
+
+
+def test_show_user():
+    """
+Check that empty or wrong names for the database raise an error
+"""
+    # ct = contacts(DB_NAME,tst_usr)
+    
+    # with open(TEST_DIRECTORY+'show_test.txt', 'w') as f:
+    #     with redirect_stdout(f):
+    #         ret = cli.main("show "+ tst_usr.name)
+
+    # with open(TEST_DIRECTORY+'expected_show_test.txt', 'r') as fe:
+    #         assert(filecmp.cmp(f.name,fe.name))
+
+    # ret = cli.main("show user1")
