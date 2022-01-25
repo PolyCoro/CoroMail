@@ -3,6 +3,8 @@ from src.config import *
 import unittest
 import os.path
 from os import path
+from base64 import b64decode,b64encode
+import logging
 
 class TestFuncs(unittest.TestCase):
 
@@ -52,6 +54,28 @@ class TestFuncs(unittest.TestCase):
 	def test_bad_json(self):
 		with self.assertRaises(BadConfigError):
 			Config("bad_json", os.getcwd() + "/tests")
+	
+	def test_encrypt(self):
+		c1 = Config("toto", os.getcwd())
+		self.assertEqual(c1.config_found, False)
+		c1.create_config("127.0.0.1")
+
+		pubk = c1.public_key
+		privk = c1.private_key
+		keyDERpk = b64decode(pubk)
+		keyDERprk = b64decode(privk)
+		public_key = RSA.importKey(keyDERpk)
+		private_key = RSA.importKey(keyDERprk)
+
+		from src.coder import Coder
+		from src.decoder import Decoder
+		code = Coder("RSA")
+		decode = Decoder("RSA")
+		txt = code.code("Coucou", public_key)
+		log= logging.getLogger( "TestFuncs.test_encrypt" )
+		clear = decode.decode(txt, private_key)
+		self.assertEqual(clear, "Coucou")
+
 
 if __name__ == '__main__':
 	unittest.main()

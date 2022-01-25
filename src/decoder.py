@@ -13,4 +13,4 @@ class Decoder :
 		if (self.algo == "RSA"):
 			decryptor = PKCS1_OAEP.new(privatekey)
 			decrypted_msg = decryptor.decrypt(message)
-		return decrypted_msg
+		return str(decrypted_msg, "utf-8")

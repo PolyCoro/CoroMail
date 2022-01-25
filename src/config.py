@@ -60,15 +60,15 @@ class Config():
         """
 
         self.CAS_url = CAS_url
-
-        self.private_key = self._generate_keys()[0][29:-26] #delete headers
-        self.public_key = self._generate_keys()[1][32:-30] #delete headers
+        keys = self._generate_keys()
+        self.private_key = keys[1][32:-29] #delete headers
+        self.public_key = keys[0][27:-25] #delete headers
         self._create_conf_file()
         
     def _generate_keys(self):
         """ Generate private and public keys of the user with RSA algorithm
         """
-        key = RSA.generate(1024)
+        key = RSA.generate(2048)
         public_key = key.publickey().exportKey("PEM").decode()
         private_key = key.exportKey("PEM").decode()
         return (public_key , private_key)
