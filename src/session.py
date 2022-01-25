@@ -29,7 +29,6 @@ class Session :
         pass
     def get_contacts(self):
         return self.contacts
-        pass
         
     def add_myself_to_server(self):
         pass

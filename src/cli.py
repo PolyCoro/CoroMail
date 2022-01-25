@@ -21,6 +21,8 @@ Options:
 import logging
 from docopt import docopt
 from src.session import *
+from src.talk_interface import *
+
 
 def main(*args,**kwargs):
 	""" Parse the options and launch the program accordingly 
@@ -58,7 +60,9 @@ def main(*args,**kwargs):
 			raise ValueError
 		if not ARGS["NAME"]:
 			raise ValueError
-		self.Session(username=ARGS["MY_NAME"])
+		self.Session = Session(username=ARGS["MY_NAME"])
+		tlk = talking_interface(ARGS["MY_NAME"],ARGS["NAME"],self.Session)
+		tlk.run()
 
 	if ARGS["-s"] or ARGS["--server"]:
 		ARGS["--server"],ARGS["-s"] =True,True
