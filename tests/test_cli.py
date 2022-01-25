@@ -11,10 +11,11 @@ Todo:
 import pytest
 import os
 import filecmp
-from src import cli
+from src import cli, contacts
 from os import remove
 from contextlib import redirect_stdout
 from docopt import DocoptExit
+
 # Where to put the tests files
 TEST_DIRECTORY="tests/"
 
@@ -159,3 +160,19 @@ def test_getpub():
     assert ret["NAME"] == "user1"
     assert ret["getpub"] == True
     assert int(ret["--port"]) == 1
+
+
+def test_show_user():
+    """
+Check that empty or wrong names for the database raise an error
+"""
+    # ct = contacts(DB_NAME,tst_usr)
+    
+    # with open(TEST_DIRECTORY+'show_test.txt', 'w') as f:
+    #     with redirect_stdout(f):
+    #         ret = cli.main("show "+ tst_usr.name)
+
+    # with open(TEST_DIRECTORY+'expected_show_test.txt', 'r') as fe:
+    #         assert(filecmp.cmp(f.name,fe.name))
+
+    # ret = cli.main("show user1")
