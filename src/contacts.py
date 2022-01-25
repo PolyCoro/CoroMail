@@ -8,7 +8,7 @@ from docopt import docopt
 import sqlite3
 from src.app_user import *
 # Not necessarily useful
-
+DEFAULT_DB_NAME = "contacts.db"
 
 class contacts:
     """ Contacts classes to manage the database from the client
@@ -19,7 +19,7 @@ class contacts:
     COLUMN_NAMES = (USERNAME_COL_NAME,"password","pubkey","ip")
 
     conn = None
-    def __init__(self,db_path,usr):
+    def __init__(self,db_path=DEFAULT_DB_NAME,usr=""):
         if db_path == "" or usr == None:
             raise ValueError
         

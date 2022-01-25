@@ -7,6 +7,9 @@
  'NAME': None,
  'TEXT': None,
  'check': False,
+ 'config_path': False,
  'getpub': False,
  'send': False,
- 'show': False}
+ 'setup': False,
+ 'show': False,
+ 'talk': False}
