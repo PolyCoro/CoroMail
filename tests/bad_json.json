@@ -1,0 +1,10 @@
+{
+    "infos": [
+        {
+            "username": "Clem",
+            "public_key": "MIICXwIBAAKBgQDfPmOOWuWvEU/CJHmmz/uTgbRf2yJV+e4e3J5+CA6xGmvdyknF\nYIPMhYGMd/HlrTndrKCIse+kEzBrQYjhO8HpO3WCFCHOm/wr8lv75wVl/zuZsspr\nt8LZLrSuUA3uEzmVO9iHfnR6q4pD6CFqbjGwb3QnQmNcwH8mTIse1mBjbwIDAQAB\nAoGBAIRnBzrF1FWJielWIsR5s/afRbBYUjv1uHGbXXDYLIaDahgnwqsKfADP6a66\n8L/MhnZfzPJlvgBs1Rm3y4vyGiWzPZfwYsx8XxKbkEEQg48JJJa2jf7zADV2b9xF\n/sagvPq9fewcu7xekuxTYhCsE79QmpZ0xRU6rmlkdGlM4zsBAkEA5vagEnXJEdas\nzCDFVOsXzG0nbSvmC9iu0RjGGXMA9zcLXWg3kARRpf6sAhWD7KPS3xwgA3i6tsdO\noKTzvhof7wJBAPdxibfjYTSiQnq7xavRX2CW+mbV4fUveCNdaYxHSktmgEoXwabE\nj+IfZT+fh8F1IbIvPUo8Fbag8RGf6HkidIECQQCV5LeMY38EIcPxks8expiiZrDw\nzE23oIAMWjyu5ZFZ4BJzI6DzyanHxlmR3K7K1KOVguZP+nmLCBzCa2t5E/FnAkEA\ntOuxFGEOe9t/3BlbCKvHnuoFIBeWZR1WLBVqzQR7D/JcLtB76SGjSmRGNWTBb/Pi\ntVPQ7mxMPAIlAQv4gElvAQJBAIoTBI+0BbApy5oCaHBpuUCBtL4jkfdmVrHG8Q9+\nuphZoCTjgmAZvzY1lzT5y3Y9nSvL8Bdw8U+2ZD8pYXAiTX8=",
+            "private_key": "GfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCvZJ9QN/LEWhxACBHuIF4a1Qfi\ne9V/Rssvh6Q49TZZk0YmefuUSPDWnkuB6k821AnQ6BH84fxW4KJx7sMz3+b3/7T3\neeH65dy5OBIUktcsMpD+DlpkornvuBgcueyPcZgWieEBlsSdHEuyVOnpHCnlxaqd\nqBzvu8uPxMI5j53nAQIDAQA",
+            "CAS_url": "http://url_du_server.com",
+        }
+    ]
+}
