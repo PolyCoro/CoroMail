@@ -3,7 +3,7 @@ from src.app_user import *
 from src.config import *
 
 class Session :
-    def __init__(self,db_path=DEFAULT_DB_NAME,username="",password=""):
+    def __init__(self,db_path=DEFAULT_DB_NAME,username="",password="",conf_path=default_config_directory):
         """ Create a session object. Requires a config and a database   
         
         Args :
