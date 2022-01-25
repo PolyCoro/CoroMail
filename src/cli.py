@@ -6,6 +6,7 @@ Usage:
 	polycoro check (NAME) [--port=<int>] [ -d | --debug]  
 	polycoro show (NAME)  
 	polycoro setup (NAME) [config_path]
+	polycoro talk (NAME)  [--port=<int>] [ -d | --debug] 
 	polycoro getpub (NAME) [--port=<int>] [ -d | --debug] 
 
 Options:
