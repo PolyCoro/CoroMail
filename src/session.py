@@ -4,16 +4,16 @@ from src.config import *
 
 class Session :
     def __init__(self,db_path=DEFAULT_DB_NAME,username="",password=""):
-    """ Create a session object. Requires a config and a database   
-    
-    Args :
-        db_path(str) : Path to the database file
-        username(str) : Session owner name
-        password(str) : Password. Irrelevant for now
-    """
-        if username = None or username ="":
+        """ Create a session object. Requires a config and a database   
+        
+        Args :
+            db_path(str) : Path to the database file
+            username(str) : Session owner name
+            password(str) : Password. Irrelevant for now
+        """
+        if username == None or username == "":
             raise ValueError
-        if db_path = None or db_path ="":
+        if db_path == None or db_path == "":
             raise ValueError
 
         self.config = Config(username)
