@@ -92,7 +92,7 @@ def test_debug_option():
         with open(TEST_DIRECTORY+'expected_dbg.txt', 'r') as fe:
             assert(filecmp.cmp(f.name,fe.name))
     
-    os.remove(TEST_DIRECTORY+'dbg.txt')
+    # os.remove(TEST_DIRECTORY+'dbg.txt')
 
 def test_send_command():
     """Check that the send command get the right parameters when launched or otherwhile fails 
